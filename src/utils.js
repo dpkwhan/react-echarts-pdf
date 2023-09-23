@@ -17,6 +17,12 @@ export const option1 = {
 };
 
 export const option2 = {
+  aria: {
+    enabled: true,
+    decal: {
+      show: true,
+    },
+  },
   title: {
     text: 'ECharts 入门示例'
   },
