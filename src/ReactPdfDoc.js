@@ -1,15 +1,37 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { Page, Image, Document, PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
+import { Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text, StyleSheet } from '@react-pdf/renderer';
 
 import {option1, option2} from './utils';
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: 'row',
+    backgroundColor: '#E4E4E4'
+  },
+  section: {
+    margin: 5,
+    padding: 5,
+    flexGrow: 1
+  }
+});
 
 const ScorecardReport = ({ imageData }) => {
   return (
     <Document>
       <Page size="A4">
         <Image src={imageData[0]}/>
-        <Image src={imageData[1]}/>
+
+        // Use width in % to adjust the size. No need for height.
+        <Image src={imageData[1]} style={{ width: '50%' }}/>
+      </Page>
+      <Page style={styles.page}>
+        <View style={styles.section}>
+          <Image src={imageData[0]}/>
+        </View>
+        <View style={styles.section}>
+          <Image src={imageData[1]}/>
+        </View>
       </Page>
     </Document>
   )
@@ -23,16 +45,20 @@ const ReactPdfDoc = () => {
 
   // Reference: https://echarts.apache.org/en/api.html#events
   const onFinished1 = () => {
-    const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
-    setDataUrl1(imgData);
+    if (dataUrl1.length == 0) {
+      const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
+      setDataUrl1(imgData);
+    }
   }
   const onEvents1 = {
     'finished': onFinished1,
   }
 
   const onFinished2 = () => {
-    const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
-    setDataUrl2(imgData);
+    if (dataUrl2.length == 0) {
+      const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
+      setDataUrl2(imgData);
+    }
   }
   const onEvents2 = {
     'finished': onFinished2,
