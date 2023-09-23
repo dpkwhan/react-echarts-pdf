@@ -1,91 +1,29 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text, StyleSheet } from '@react-pdf/renderer';
+import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 
-import {option1, option2} from './utils';
+import {styles, bgImgLink, option1, option2} from './utils';
 import BAMLogo from './BAMLogo';
+
 
 Font.register({
   family: 'Oswald',
   src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
 });
 
-const styles = StyleSheet.create({
-  body: {
-    paddingTop: 35,
-    paddingBottom: 65,
-    paddingHorizontal: 35,
-  },
-  title: {
-    marginTop: 300,
-    fontSize: 24,
-    textAlign: 'center',
-    fontFamily: 'Oswald'
-  },
-  author: {
-    fontSize: 12,
-    textAlign: 'center',
-    marginBottom: 40,
-  },
-  subtitle: {
-    fontSize: 18,
-    margin: 12,
-    fontFamily: 'Oswald'
-  },
-  text: {
-    margin: 12,
-    fontSize: 14,
-    textAlign: 'justify',
-    fontFamily: 'Times-Roman'
-  },
-  image: {
-    marginVertical: 15,
-    marginHorizontal: 100,
-  },
-  twoColumnPage: {
-    flexDirection: 'row',
-    backgroundColor: '#E4E4E4'
-  },
-  section: {
-    margin: 5,
-    padding: 5,
-    flexGrow: 1
-  },
-  pageNumber: {
-    position: 'absolute',
-    fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-    color: 'grey',
-  },
-  pageBackground: {
-    position: 'absolute',
-    minWidth: '100%',
-    minHeight: '100%',
-    display: 'block',
-    height: '50%',
-    width: '100%',
-  },
-  logo: {
-    marginTop: 5,
-    marginLeft: 5,
-  },
-});
 
 const ScorecardReport = ({ imageData }) => {
   return (
     <Document>
-      <Page orientation="landscape">
-        <Image src="https://res.cloudinary.com/bamfunds/image/upload/fl_lossy,f_auto,q_auto:eco/gpafxy6stnw0pc6joa66.jpg" style={styles.pageBackground} />
+      <Page orientation="landscape" bookmark={{title: "Cover"}}>
+        <Image src={bgImgLink} style={styles.pageBackground} />
         <BAMLogo style={styles.logo} />
         <Text style={styles.title}>
           Execution Performance Scorecard
         </Text>
       </Page>
 
-      <Page size="A4" bookmark={{title: "Overview"}}>
+      <Page orientation="landscape" bookmark={{title: "Overview"}}>
         <Image src={imageData[0]}/>
 
         {/* Use width in % to adjust the size. No need for height. */}
@@ -95,7 +33,7 @@ const ScorecardReport = ({ imageData }) => {
         )} fixed />
       </Page>
 
-      <Page size="A4" bookmark={{title: "High Touch"}}>
+      <Page orientation="landscape" bookmark={{title: "High Touch"}}>
         <Image src={imageData[0]}/>
 
         {/* Use width in % to adjust the size. No need for height. */}
@@ -105,7 +43,7 @@ const ScorecardReport = ({ imageData }) => {
         )} fixed />
       </Page>
 
-      <Page size="A4" bookmark={{title: "Indication of Interest"}}>
+      <Page orientation="landscape" bookmark={{title: "Indication of Interest"}}>
         <Image src={imageData[0]}/>
 
         {/* Use width in % to adjust the size. No need for height. */}
@@ -115,7 +53,7 @@ const ScorecardReport = ({ imageData }) => {
         )} fixed />
       </Page>
 
-      <Page style={styles.twoColumnPage} bookmark={{title: "Low Touch"}}>
+      <Page orientation="landscape" style={styles.twoColumnPage} bookmark={{title: "Low Touch"}}>
         <View style={styles.section}>
           <Image src={imageData[0]}/>
         </View>
@@ -138,7 +76,7 @@ const ReactPdfDoc = () => {
 
   // Reference: https://echarts.apache.org/en/api.html#events
   const onFinished1 = () => {
-    if (dataUrl1.length == 0) {
+    if (dataUrl1.length === 0) {
       const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl1(imgData);
     }
@@ -148,7 +86,7 @@ const ReactPdfDoc = () => {
   }
 
   const onFinished2 = () => {
-    if (dataUrl2.length == 0) {
+    if (dataUrl2.length === 0) {
       const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl2(imgData);
     }
