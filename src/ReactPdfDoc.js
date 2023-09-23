@@ -1,6 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
-import { Collapse } from 'antd';
 import { Page, Image, Document, PDFViewer, PDFDownloadLink } from '@react-pdf/renderer';
 
 import {option1, option2} from './utils';
@@ -39,32 +38,21 @@ const ReactPdfDoc = () => {
     'finished': onFinished2,
   }
 
-  const items = [
-    {
-      key: '1',
-      label: 'This is panel header 1',
-      children: <ReactECharts
+  return (
+    <>
+      <ReactECharts
         ref={instance1}
         option={option1}
         style={{ height: 600 }}
         onEvents={onEvents1}
-      />,
-    },
-    {
-      key: '2',
-      label: 'This is panel header 2',
-      children: <ReactECharts
+      />
+
+      <ReactECharts
         ref={instance2}
         option={option2}
         style={{ height: 600 }}
         onEvents={onEvents2}
-      />,
-    },
-  ];
-
-  return (
-    <>
-      <Collapse items={items} defaultActiveKey={['1', '2']} />;
+      />
 
       {dataUrl1.length > 10 && (
         <>
