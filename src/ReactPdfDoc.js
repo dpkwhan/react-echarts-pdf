@@ -6,6 +6,7 @@ import BAMLogo from './BAMLogo';
 import useDataUrl from './useDataUrl';
 
 // Reference: https://echarts.apache.org/en/api.html#events
+// Reference: https://github.com/diegomura/react-pdf/issues/1396
 
 Font.register({
   family: 'Oswald',
@@ -24,30 +25,30 @@ const ScorecardReport = ({ imageData }) => {
       </Page>
 
       <Page orientation="landscape" bookmark={{title: "Overview"}}>
-        <Image src={imageData[0]}/>
+        <Image src={imageData[0]} />
 
         {/* Use width in % to adjust the size. No need for height. */}
-        <Image src={imageData[1]} style={{ width: '50%' }}/>
+        <Image src={imageData[1]} style={{ width: '50%' }} />
         <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
           `${pageNumber} / ${totalPages}`
         )} fixed />
       </Page>
 
       <Page orientation="landscape" bookmark={{title: "High Touch"}}>
-        <Image src={imageData[0]}/>
+        <Image src={imageData[0]} />
 
         {/* Use width in % to adjust the size. No need for height. */}
-        <Image src={imageData[1]} style={{ width: '50%' }}/>
+        <Image src={imageData[1]} style={{ width: '50%' }} />
         <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
           `${pageNumber} / ${totalPages}`
         )} fixed />
       </Page>
 
       <Page orientation="landscape" bookmark={{title: "Indication of Interest"}}>
-        <Image src={imageData[0]}/>
+        <Image src={imageData[0]} />
 
         {/* Use width in % to adjust the size. No need for height. */}
-        <Image src={imageData[1]} style={{ width: '50%' }}/>
+        <Image src={imageData[1]} style={{ width: '50%' }} />
         <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
           `${pageNumber} / ${totalPages}`
         )} fixed />
@@ -55,10 +56,10 @@ const ScorecardReport = ({ imageData }) => {
 
       <Page orientation="landscape" style={styles.twoColumnPage} bookmark={{title: "Low Touch"}}>
         <View style={styles.section}>
-          <Image src={imageData[0]}/>
+          <Image src={imageData[0]} />
         </View>
         <View style={styles.section}>
-          <Image src={imageData[1]}/>
+          <Image src={imageData[1]} />
         </View>
         <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
           `${pageNumber} / ${totalPages}`
@@ -66,7 +67,7 @@ const ScorecardReport = ({ imageData }) => {
       </Page>
 
       <Page orientation="landscape" bookmark={{title: "Indication of Interest"}}>
-        <Image src={imageData[2]}/>
+        <Image src={imageData[2]} />
         <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
           `${pageNumber} / ${totalPages}`
         )} fixed />
@@ -78,7 +79,7 @@ const ScorecardReport = ({ imageData }) => {
 const ReactPdfDoc = () => {
   const [ dataUrl1 ] = useDataUrl(option1);
   const [ dataUrl2 ] = useDataUrl(option2);
-  const [ dataUrl3 ] = useDataUrl(option3);
+  const [ dataUrl3 ] = useDataUrl(option3, 1.5);
 
   return (
     <>
