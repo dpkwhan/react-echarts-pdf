@@ -1,12 +1,11 @@
 import React, { useRef, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } from '@react-pdf/renderer';
-
 import { createRoot } from 'react-dom/client';
-import { flushSync } from 'react-dom';
 
-import {styles, bgImgLink, option1, option2} from './utils';
+import {styles, bgImgLink, option1, option2, option3} from './utils';
 import BAMLogo from './BAMLogo';
+import useDataUrl from './useDataUrl';
 
 // Reference: https://echarts.apache.org/en/api.html#events
 
@@ -67,76 +66,34 @@ const ScorecardReport = ({ imageData }) => {
           `${pageNumber} / ${totalPages}`
         )} fixed />
       </Page>
+
+      <Page orientation="landscape" bookmark={{title: "Indication of Interest"}}>
+        <Image src={imageData[2]}/>
+        <Text style={styles.pageNumber} render={({ pageNumber, totalPages }) => (
+          `${pageNumber} / ${totalPages}`
+        )} fixed />
+      </Page>
     </Document>
   )
 }
 
 const ReactPdfDoc = () => {
-  const instance1 = useRef(null);
-  const instance2 = useRef(null);
-  const [ dataUrl1, setDataUrl1 ] = useState('');
-  const [ dataUrl2, setDataUrl2 ] = useState('');
-
-  // The first chart
-  useEffect(() => {
-    if (dataUrl1.length === 0) {
-      const div = document.createElement('div');
-      const root = createRoot(div);
-      root.render(
-        <ReactECharts
-          ref={instance1}
-          option={option1}
-          style={{ height: 400, width: 600 }}
-          onEvents={{
-            'finished': () => {
-              if (dataUrl1.length === 0) {
-                console.log("I am finished 1.");
-                const imgData = instance1.current.getEchartsInstance().getDataURL();
-                setDataUrl1(imgData);
-              }
-            },
-          }}
-        />
-      );
-    }
-  }, [dataUrl1]);
-
-  // The second chart
-  useEffect(() => {
-    if (dataUrl2.length === 0) {
-      const div = document.createElement('div');
-      const root = createRoot(div);
-      root.render(
-        <ReactECharts
-          ref={instance2}
-          option={option2}
-          style={{ height: 400, width: 600 }}
-          onEvents={{
-            'finished': () => {
-              if (dataUrl2.length === 0) {
-                console.log("I am finished 2.");
-                const imgData = instance2.current.getEchartsInstance().getDataURL();
-                setDataUrl2(imgData);
-              }
-            },
-          }}
-        />
-      );
-    }
-  }, [dataUrl2]);
+  const [ dataUrl1 ] = useDataUrl(option1);
+  const [ dataUrl2 ] = useDataUrl(option2);
+  const [ dataUrl3 ] = useDataUrl(option3);
 
   return (
     <>
-      {dataUrl1.length > 10 && (
+      {dataUrl1.length > 10 && dataUrl2.length > 10 && dataUrl3.length > 10 && (
         <>
-          <PDFDownloadLink document={<ScorecardReport imageData={[dataUrl1, dataUrl2]} />} fileName="scorecard.pdf">
+          <PDFDownloadLink document={<ScorecardReport imageData={[dataUrl1, dataUrl2, dataUrl3]} />} fileName="scorecard.pdf">
             {({ blob, url, loading, error }) =>
               loading ? 'Loading document...' : 'Download now!'
             }
           </PDFDownloadLink>
 
           <PDFViewer width="100%" height="1750px">
-            <ScorecardReport imageData={[dataUrl1, dataUrl2]} />
+            <ScorecardReport imageData={[dataUrl1, dataUrl2, dataUrl3]} />
           </PDFViewer>
         </>
       )}
