@@ -17,25 +17,19 @@ export const option1 = {
 };
 
 export const option2 = {
-  aria: {
-    enabled: true,
-    decal: {
-      show: true,
-    },
-  },
   title: {
-    text: 'ECharts 入门示例'
+    text: 'ECharts Intro Example'
   },
   tooltip: {},
   legend: {
-    data:['销量']
+    data: ['Sales']
   },
   xAxis: {
-    data: ['衬衫', '羊毛衫', '雪纺衫', '裤子', '高跟鞋', '袜子']
+    data: ['Shirts', 'Pool', 'Clothes', 'Pants', 'HighHeal', 'Socks']
   },
   yAxis: {},
   series: [{
-    name: '销量',
+    name: 'Sales',
     type: 'bar',
     data: [5, 20, 36, 10, 10, 20]
   }]

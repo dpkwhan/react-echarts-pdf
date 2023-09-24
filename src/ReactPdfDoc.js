@@ -79,8 +79,8 @@ const ReactPdfDoc = () => {
 
   // The first chart
   const onFinished1 = () => {
-    console.log("I am finished 1.");
     if (dataUrl1.length === 0) {
+      console.log("I am finished 1.");
       const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl1(imgData);
     }
@@ -107,8 +107,8 @@ const ReactPdfDoc = () => {
 
   // The second chart
   const onFinished2 = () => {
-    console.log("I am finished 2.");
     if (dataUrl2.length === 0) {
+      console.log("I am finished 2.");
       const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl2(imgData);
     }
