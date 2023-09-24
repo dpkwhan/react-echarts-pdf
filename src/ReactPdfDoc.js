@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 
@@ -78,59 +78,52 @@ const ReactPdfDoc = () => {
   const [ dataUrl2, setDataUrl2 ] = useState('');
 
   // The first chart
-  const onFinished1 = () => {
+  useEffect(() => {
     if (dataUrl1.length === 0) {
-      console.log("I am finished 1.");
-      const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
-      setDataUrl1(imgData);
-    }
-  }
-  const onEvents1 = {
-    'finished': onFinished1,
-  }
-
-  const div1 = document.createElement('div');
-  const root1 = createRoot(div1);
-  flushSync(() => {
-    if (dataUrl1.length === 0) {
-      root1.render(
+      const div = document.createElement('div');
+      const root = createRoot(div);
+      root.render(
         <ReactECharts
           ref={instance1}
           option={option1}
           style={{ height: 400, width: 600 }}
-          onEvents={onEvents1}
+          onEvents={{
+            'finished': () => {
+              if (dataUrl1.length === 0) {
+                console.log("I am finished 1.");
+                const imgData = instance1.current.getEchartsInstance().getDataURL();
+                setDataUrl1(imgData);
+              }
+            },
+          }}
         />
       );
     }
-  });
-
+  }, [dataUrl1]);
 
   // The second chart
-  const onFinished2 = () => {
+  useEffect(() => {
     if (dataUrl2.length === 0) {
-      console.log("I am finished 2.");
-      const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
-      setDataUrl2(imgData);
-    }
-  }
-  const onEvents2 = {
-    'finished': onFinished2,
-  }
-
-  const div2 = document.createElement('div');
-  const root2 = createRoot(div2);
-  flushSync(() => {
-    if (dataUrl2.length === 0) {
-      root2.render(
+      const div = document.createElement('div');
+      const root = createRoot(div);
+      root.render(
         <ReactECharts
           ref={instance2}
           option={option2}
           style={{ height: 400, width: 600 }}
-          onEvents={onEvents2}
+          onEvents={{
+            'finished': () => {
+              if (dataUrl2.length === 0) {
+                console.log("I am finished 2.");
+                const imgData = instance2.current.getEchartsInstance().getDataURL();
+                setDataUrl2(imgData);
+              }
+            },
+          }}
         />
       );
     }
-  });
+  }, [dataUrl2]);
 
   return (
     <>
