@@ -1,7 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import ReactECharts from 'echarts-for-react';
+import React from 'react';
 import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } from '@react-pdf/renderer';
-import { createRoot } from 'react-dom/client';
 
 import {styles, bgImgLink, option1, option2, option3} from './utils';
 import BAMLogo from './BAMLogo';
