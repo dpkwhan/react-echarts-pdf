@@ -78,7 +78,7 @@ const ScorecardReport = ({ imageData }) => {
 const ReactPdfDoc = () => {
   const [ dataUrl1 ] = useDataUrl(option1);
   const [ dataUrl2 ] = useDataUrl(option2);
-  const [ dataUrl3 ] = useDataUrl(option3);
+  const [ dataUrl3 ] = useDataUrl(option3, 1.5);
 
   return (
     <>

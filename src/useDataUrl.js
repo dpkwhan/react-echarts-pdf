@@ -2,7 +2,8 @@ import { useState, useEffect, useRef } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { createRoot } from 'react-dom/client';
 
-const useDataUrl = (option) => {
+
+const useDataUrl = (option, scale=1.0) => {
   const instance = useRef(null);
   const [ data, setData ] = useState('');
 
@@ -19,7 +20,7 @@ const useDataUrl = (option) => {
       <ReactECharts
         ref={instance}
         option={option}
-        style={{ height: 400, width: 600 }}
+        style={{ width: 600 * scale, height: 400 * scale }}
         onEvents={{ 'finished': onFinished }}
       />
     );
