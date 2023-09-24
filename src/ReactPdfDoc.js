@@ -2,15 +2,18 @@ import React, { useRef, useState } from 'react';
 import ReactECharts from 'echarts-for-react';
 import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } from '@react-pdf/renderer';
 
+import { createRoot } from 'react-dom/client';
+import { flushSync } from 'react-dom';
+
 import {styles, bgImgLink, option1, option2} from './utils';
 import BAMLogo from './BAMLogo';
 
+// Reference: https://echarts.apache.org/en/api.html#events
 
 Font.register({
   family: 'Oswald',
   src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
 });
-
 
 const ScorecardReport = ({ imageData }) => {
   return (
@@ -74,8 +77,9 @@ const ReactPdfDoc = () => {
   const [ dataUrl1, setDataUrl1 ] = useState('');
   const [ dataUrl2, setDataUrl2 ] = useState('');
 
-  // Reference: https://echarts.apache.org/en/api.html#events
+  // The first chart
   const onFinished1 = () => {
+    console.log("I am finished 1.");
     if (dataUrl1.length === 0) {
       const imgData = instance1.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl1(imgData);
@@ -85,7 +89,25 @@ const ReactPdfDoc = () => {
     'finished': onFinished1,
   }
 
+  const div1 = document.createElement('div');
+  const root1 = createRoot(div1);
+  flushSync(() => {
+    if (dataUrl1.length === 0) {
+      root1.render(
+        <ReactECharts
+          ref={instance1}
+          option={option1}
+          style={{ height: 400, width: 600 }}
+          onEvents={onEvents1}
+        />
+      );
+    }
+  });
+
+
+  // The second chart
   const onFinished2 = () => {
+    console.log("I am finished 2.");
     if (dataUrl2.length === 0) {
       const imgData = instance2.current.getEchartsInstance().getDataURL({ backgroundColor: '#FFF' });
       setDataUrl2(imgData);
@@ -94,6 +116,21 @@ const ReactPdfDoc = () => {
   const onEvents2 = {
     'finished': onFinished2,
   }
+
+  const div2 = document.createElement('div');
+  const root2 = createRoot(div2);
+  flushSync(() => {
+    if (dataUrl2.length === 0) {
+      root2.render(
+        <ReactECharts
+          ref={instance2}
+          option={option2}
+          style={{ height: 400, width: 600 }}
+          onEvents={onEvents2}
+        />
+      );
+    }
+  });
 
   return (
     <>
@@ -105,26 +142,11 @@ const ReactPdfDoc = () => {
             }
           </PDFDownloadLink>
 
-          <PDFViewer width="100%" height="1200px">
+          <PDFViewer width="100%" height="1750px">
             <ScorecardReport imageData={[dataUrl1, dataUrl2]} />
           </PDFViewer>
         </>
       )}
-      
-      <ReactECharts
-        ref={instance1}
-        option={option1}
-        style={{ height: 400, width: 600 }}
-        onEvents={onEvents1}
-      />
-
-      <ReactECharts
-        ref={instance2}
-        option={option2}
-        style={{ height: 400, width: 600 }}
-        onEvents={onEvents2}
-      />
-
     </>
   );
 };
