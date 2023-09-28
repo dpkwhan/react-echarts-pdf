@@ -4,6 +4,8 @@ import { Font, Page, Image, Document, PDFViewer, PDFDownloadLink, View, Text } f
 import {styles, bgImgLink, option1, option2, option3} from './utils';
 import BAMLogo from './BAMLogo';
 import useDataUrl from './useDataUrl';
+import CustomTablePDF from './CustomTablePDF';
+import numeral from 'numeral';
 
 // Reference: https://echarts.apache.org/en/api.html#events
 // Reference: https://github.com/diegomura/react-pdf/issues/1396
@@ -12,6 +14,44 @@ Font.register({
   family: 'Oswald',
   src: 'https://fonts.gstatic.com/s/oswald/v13/Y_TKV6o8WovbUd3m_X9aAA.ttf'
 });
+
+const fields = [
+  {
+      title: " Agent Name",
+      custom: true,
+      component: (item) => `${item.agent_name}`,
+      width: 30,
+  },
+  {
+      title: " Policy No",
+      custom: true,
+      component: (item) => `${item.policy_no}`,
+      width: 35,
+  },
+  {
+      title: "Policy Class",
+      value: "policy_class",
+      width: 20,
+  },
+  {
+      title: "Amount",
+      custom: true,
+      style: { textAlign: "right" },
+      className: "text-right",
+      component: (item) =>numeral(item.contribution).format('0,0'),
+      width: 15,
+  }
+];
+
+const details = [
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+  {agent_name: "David Han", policy_no: "12345", policy_class: "Admin", contribution: 2394},
+];
 
 const ScorecardReport = ({ imageData }) => {
   return (
@@ -22,6 +62,12 @@ const ScorecardReport = ({ imageData }) => {
         <Text style={styles.title}>
           Execution Performance Scorecard
         </Text>
+      </Page>
+
+      <Page>
+        <View style={{margin: 50}}>
+        <CustomTablePDF fields={fields} data={details} />
+        </View>
       </Page>
 
       <Page orientation="landscape" bookmark={{title: "Overview"}}>
