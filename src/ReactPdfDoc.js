@@ -19,13 +19,13 @@ const fields = [
   {
       title: " Agent Name",
       custom: true,
-      component: (item) => `${item.agent_name}`,
+      component: item => `${item.agent_name}`,
       width: 30,
   },
   {
       title: " Policy No",
       custom: true,
-      component: (item) => `${item.policy_no}`,
+      component: item => `${item.policy_no}`,
       width: 35,
   },
   {
@@ -36,9 +36,9 @@ const fields = [
   {
       title: "Amount",
       custom: true,
-      style: { textAlign: "right" },
+      style: { textAlign: "center" },  // left, center, right
       className: "text-right",
-      component: (item) =>numeral(item.contribution).format('0,0'),
+      component: item => numeral(item.contribution).format('0,0'),
       width: 15,
   }
 ];
@@ -64,9 +64,9 @@ const ScorecardReport = ({ imageData }) => {
         </Text>
       </Page>
 
-      <Page>
+      <Page orientation="landscape">
         <View style={{margin: 50}}>
-        <CustomTablePDF fields={fields} data={details} />
+          <CustomTablePDF fields={fields} data={details} />
         </View>
       </Page>
 

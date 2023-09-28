@@ -10,7 +10,7 @@ const BORDER_COLOR = "#000";
 const BORDER_STYLE = "solid";
 
 const styles = StyleSheet.create({
-  headerBg: {
+  headerBgColor: {
     backgroundColor: "#aaa",
   },
 
@@ -22,6 +22,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
+  },
+
+  tableHeader: {
+    margin: 2,
+    fontSize: 13,
+    fontWeight: "bold",
+    fontFamily: "Oswald",
   },
 
   tableRow: {
@@ -38,22 +45,11 @@ const styles = StyleSheet.create({
     borderTopWidth: 0,
   },
 
-  tableCellHeader: {
-    margin: 2,
-    fontSize: 13,
-    fontWeight: "bold",
-    fontFamily: "Oswald",
-  },
-
   tableCell: {
     margin: 2,
     fontSize: 12,
     fontFamily: "Oswald",
   },
-
-  textCenter: {
-    textAlign: "center",
-  }
 });
 
 const checkStrEmpty = str => {
@@ -65,10 +61,10 @@ const CustomTablePDF = props => {
 
   return (
     <View style={styles.table}>
-      <View style={[styles.tableRow, styles.headerBg]}>
+      <View style={[styles.tableRow, styles.headerBgColor]}>
         {fields.map((_item, _idx) => (
-          <View key={_idx} style={[styles.tableCol, { width: `${_item.width}%` }]}>
-            <Text style={[styles.tableCellHeader, { textAlign: "center" }]}>
+          <View key={`header-${_idx}`} style={[styles.tableCol, { width: `${_item.width}%` }]}>
+            <Text style={[styles.tableHeader, { textAlign: "center" }]}>
               {_item.title}
             </Text>
           </View>
@@ -76,28 +72,18 @@ const CustomTablePDF = props => {
       </View>
 
       {data.map((item, idx) => item && (
-        <View key={idx} style={styles.tableRow}>
+        <View key={`row-${idx}`} style={styles.tableRow}>
           {fields.map((_item, _idx) => {
             let val = item[_item.value] || "";
             let value_alt = (_item.value_alt && item[_item.value_alt]) || "";
 
-            if (_item.custom) {
-              return (
-                <View key={_idx} style={[styles.tableCol, { width: `${_item.width}%` }]}>
-                  <Text style={[styles.tableCell, item.style ? item.style : {}]}>
-                    {_item.component(item)}
-                  </Text>
-                </View>
-              );
-            } else {
-              return (
-                <View style={[styles.tableCol, { width: `${_item.width}%` }]}>
-                  <Text style={[styles.tableCell, item.style ? item.style : {}]}>
-                    {checkStrEmpty(val) ? value_alt : val || "-"}
-                  </Text>
-                </View>
-              );
-            }
+            return (
+              <View key={`col-${_idx}`} style={[styles.tableCol, { width: `${_item.width}%` }]}>
+                <Text style={[styles.tableCell, _item.style ? _item.style : {}]}>
+                  {_item.custom ? _item.component(item) : checkStrEmpty(val) ? value_alt : val || "-"}
+                </Text>
+              </View>
+            );
           })}
         </View>)
       )}
